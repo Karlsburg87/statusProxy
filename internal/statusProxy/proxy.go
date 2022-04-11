@@ -96,14 +96,19 @@ func Proxy() error {
 		port = "8080" //default
 	}
 
-	/* mux := http.NewServeMux()
+	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if err := json.NewEncoder(w).Encode(map[string]any{"message": "This is the proxy service for statusSentry. Please use the '/proxy' endpoint"}); err != nil {
+			w.WriteHeader(http.StatusBadGateway)
+		}
+	})
+	mux.HandleFunc("/proxy", func(w http.ResponseWriter, r *http.Request) {
 		proxy.ServeHTTP(w, r)
-	}) */
+	})
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%s", port),
-		Handler: &proxy, // could also use mux to use explicit separate paths for proxying or other server uses
+		Handler: mux, // could also use &proxy to use the proxy as global handler
 	}
 
 	//launch proxy server

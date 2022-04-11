@@ -43,7 +43,7 @@ func TestProxy(t *testing.T) {
 	}(t)
 
 	//Send message via proxy
-	res, err := http.Post("http://localhost:8080", "application/json", nil)
+	res, err := http.Post("http://localhost:8080/proxy", "application/json", nil)
 	if err != nil {
 		t.Logf("http get error:Path %v\n", err)
 		t.Fail()
