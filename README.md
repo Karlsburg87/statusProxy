@@ -1,5 +1,15 @@
 # statusProxy 
-statusProxy is a small service intended to proxy external webhook incoming via Cloud Run to a VM on Cloud Compute for the purposes of utilizing load-balancing and SSL certs - whilst being able to standardise incoming without introducing general bugs
+statusProxy is a small service intended to proxy external webhook incoming via Cloud Run to a VM on Cloud Compute for the purposes of utilizing load-balancing and SSL certs - whilst being able to standardize incoming without introducing general bugs
+
+## Usage 
+
+### from source code
+
+`PROXY_TO=xx PORT=8080 go run main.go`
+### via containers (build and run)
+`PROXY_TO=xx PORT=8080 bash localbuild.sh`
+### via GCP Cloud Build
+Use `cloudbuild.yaml` as the build config file to build image and run. The substitution variables required are listed at the top of the file.
 
 ## Settings
 |envar|usage|

@@ -6,9 +6,10 @@ WORKDIR /go/src/statusProxy
 
 #Let us cache modules retrieval as they do not change often.
 #Better use of cache than go get -d -u
-COPY go.mod .
-COPY go.sum .
-RUN go mod download
+#Unneeded
+#COPY go.mod .
+#COPY go.sum .
+#RUN go mod download
 
 #Update certificates
 RUN apk --update add ca-certificates

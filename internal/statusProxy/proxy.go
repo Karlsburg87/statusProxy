@@ -61,7 +61,7 @@ func Proxy() error {
 				defer r.Body.Close()
 			}
 			//log error and return error json to client
-			e := map[string]any{"error": err.Error(), "request_header": fmt.Sprintf("%+v", r.Header), "request_body": string(body)}
+			e := map[string]string{"error": err.Error(), "request_header": fmt.Sprintf("%+v", r.Header), "request_body": string(body)}
 			log.Printf("%+v", e)
 			w.WriteHeader(http.StatusBadGateway)
 			json.NewEncoder(w).Encode(e)
@@ -92,13 +92,13 @@ func Proxy() error {
 
 	//setup server
 	port := os.Getenv("PORT")
-	if port != "" {
+	if port == "" {
 		port = "8080" //default
 	}
-
+	//using a mux instead of &proxy as server handler to provide a healthy container startup signal to Cloud Run
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if err := json.NewEncoder(w).Encode(map[string]any{"message": "This is the proxy service for statusSentry. Please use the '/proxy' endpoint"}); err != nil {
+		if err := json.NewEncoder(w).Encode(map[string]string{"message": "This is the proxy service for statusSentry. Please use the '/proxy' endpoint"}); err != nil {
 			w.WriteHeader(http.StatusBadGateway)
 		}
 	})
